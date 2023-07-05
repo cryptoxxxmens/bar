@@ -1,0 +1,68 @@
+class Transaction:
+    def __init__(self, date, description, amount):
+        self.date = date
+        self.description = description
+        self.amount = amount
+
+    def __str__(self):
+        return f"{self.date} - {self.description}: {self.amount}"
+
+class Account:
+    def __init__(self, name):
+        self.name = name
+        self.balance = 0
+        self.transactions = []
+
+    def deposit(self, date, description, amount):
+        transaction = Transaction(date, description, amount)
+        self.transactions.append(transaction)
+        self.balance += amount
+
+    def withdraw(self, date, description, amount):
+        if amount <= self.balance:
+            transaction = Transaction(date, description, -amount)
+            self.transactions.append(transaction)
+            self.balance -= amount
+        else:
+            print("Недостаточно средств на счете.")
+
+    def view_transactions(self):
+        if not self.transactions:
+            print("Список транзакций пуст.")
+        else:
+            print("Список транзакций:")
+            for transaction in self.transactions:
+                print(transaction)
+
+account = Account("John's Account")
+
+while True:
+    print("Учет финансов")
+    print("1. Внести депозит")
+    print("2. Снять деньги")
+    print("3. Просмотреть транзакции")
+    print("4. Выйти")
+
+    choice = input("Выберите действие: ")
+
+    if choice == "1":
+        date = input("Введите дату транзакции: ")
+        description = input("Введите описание транзакции: ")
+        amount = float(input("Введите сумму депозита: "))
+        account.deposit(date, description, amount)
+        print("Депозит успешно выполнен.")
+
+    elif choice == "2":
+        date = input("Введите дату транзакции: ")
+        description = input("Введите описание транзакции: ")
+        amount = float(input("Введите сумму для снятия: "))
+        account.withdraw(date, description, amount)
+
+    elif choice == "3":
+        account.view_transactions()
+
+    elif choice == "4":
+        break
+
+    else:
+        print("Неверный выбор. Пожалуйста, выберите снова.")
